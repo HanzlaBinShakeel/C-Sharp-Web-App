@@ -200,6 +200,23 @@ FinanceApp/
 
 ## 🗄️ Database Schema
 
+### Database Schema Script
+
+A complete SQL Server database schema script is provided in `DatabaseSchema.sql`. This script includes:
+- All table definitions with proper data types
+- Primary keys and foreign key constraints
+- Unique indexes for data integrity
+- ASP.NET Identity tables
+- All relationships and constraints
+
+**To create the database using the script:**
+1. Open SQL Server Management Studio (SSMS) or Azure Data Studio
+2. Connect to your SQL Server instance
+3. Open and execute `DatabaseSchema.sql`
+4. The script will create the database and all tables automatically
+
+**Note:** The application also creates the database automatically on first run using Entity Framework Core. The SQL script is provided for manual database setup or for reference.
+
 ### Core Tables
 
 - **AccountGroups** - Account group master (Assets, Liabilities, etc.)
