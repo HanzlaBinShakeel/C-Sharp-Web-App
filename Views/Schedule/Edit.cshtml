@@ -1,0 +1,64 @@
+@model FinanceApp.Models.Schedule
+@{
+    ViewData["Title"] = "Edit Schedule";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Edit Schedule</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="ScheduleID" />
+                    <div class="form-group">
+                        <label asp-for="ScheduleCode"></label>
+                        <input asp-for="ScheduleCode" class="form-control" />
+                        <span asp-validation-for="ScheduleCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ScheduleName"></label>
+                        <input asp-for="ScheduleName" class="form-control" />
+                        <span asp-validation-for="ScheduleName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ScheduleType"></label>
+                        <input asp-for="ScheduleType" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LinkedLedgerID"></label>
+                        <select asp-for="LinkedLedgerID" class="form-control">
+                            <option value="">None</option>
+                            @foreach (var ledger in ViewBag.Ledgers)
+                            {
+                                <option value="@ledger.LedgerID">@ledger.LedgerName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description"></label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" asp-for="IsActive" /> Active
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

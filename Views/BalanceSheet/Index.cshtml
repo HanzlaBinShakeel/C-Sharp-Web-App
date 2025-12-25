@@ -1,0 +1,97 @@
+@model FinanceApp.Services.BalanceSheetReport
+@{
+    ViewData["Title"] = "Balance Sheet";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Balance Sheet</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <form method="post" class="form-inline">
+                    <div class="form-group mr-2">
+                        <label>As of Date:</label>
+                        <input type="date" name="asOfDate" value="@ViewBag.AsOfDate.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Generate</button>
+                    @if (Model != null)
+                    {
+                        <a href="@Url.Action("ExportPDF", new { asOfDate = ViewBag.AsOfDate })" class="btn btn-success mr-2">Export PDF</a>
+                        <a href="@Url.Action("ExportExcel", new { asOfDate = ViewBag.AsOfDate })" class="btn btn-info">Export Excel</a>
+                    }
+                </form>
+            </div>
+            @if (Model != null)
+            {
+                <div class="card-body">
+                    <h4 class="text-center">Balance Sheet as on @Model.AsOfDate.ToString("dd/MM/yyyy")</h4>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>ASSETS</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var asset in Model.Assets)
+                                    {
+                                        <tr>
+                                            <td>@asset.LedgerName</td>
+                                            <td class="text-right">@asset.Amount.ToString("C")</td>
+                                        </tr>
+                                    }
+                                    <tr class="font-weight-bold">
+                                        <td>TOTAL ASSETS</td>
+                                        <td class="text-right">@Model.TotalAssets.ToString("C")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>LIABILITIES & EQUITY</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var liability in Model.Liabilities)
+                                    {
+                                        <tr>
+                                            <td>@liability.LedgerName</td>
+                                            <td class="text-right">@liability.Amount.ToString("C")</td>
+                                        </tr>
+                                    }
+                                    @foreach (var equity in Model.Equity)
+                                    {
+                                        <tr>
+                                            <td>@equity.LedgerName</td>
+                                            <td class="text-right">@equity.Amount.ToString("C")</td>
+                                        </tr>
+                                    }
+                                    <tr class="font-weight-bold">
+                                        <td>TOTAL LIABILITIES & EQUITY</td>
+                                        <td class="text-right">@((Model.TotalLiabilities + Model.TotalEquity).ToString("C"))</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

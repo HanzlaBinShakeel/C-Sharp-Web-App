@@ -1,0 +1,99 @@
+@model FinanceApp.Services.IncomeExpenditureReport
+@{
+    ViewData["Title"] = "Income & Expenditure Report";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Income & Expenditure Report</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <form method="post" class="form-inline">
+                    <div class="form-group mr-2">
+                        <label>From Date:</label>
+                        <input type="date" name="fromDate" value="@ViewBag.FromDate.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>To Date:</label>
+                        <input type="date" name="toDate" value="@ViewBag.ToDate.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Generate</button>
+                    @if (Model != null)
+                    {
+                        <a href="@Url.Action("ExportPDF", new { fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="btn btn-success mr-2">Export PDF</a>
+                        <a href="@Url.Action("ExportExcel", new { fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="btn btn-info">Export Excel</a>
+                    }
+                </form>
+            </div>
+            @if (Model != null)
+            {
+                <div class="card-body">
+                    <h4 class="text-center">Income & Expenditure Report - @Model.FromDate.ToString("dd/MM/yyyy") to @Model.ToDate.ToString("dd/MM/yyyy")</h4>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>INCOME</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var income in Model.Income)
+                                    {
+                                        <tr>
+                                            <td>@income.LedgerName</td>
+                                            <td class="text-right">@income.Amount.ToString("C")</td>
+                                        </tr>
+                                    }
+                                    <tr class="font-weight-bold">
+                                        <td>TOTAL INCOME</td>
+                                        <td class="text-right">@Model.TotalIncome.ToString("C")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>EXPENDITURE</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var expense in Model.Expenditure)
+                                    {
+                                        <tr>
+                                            <td>@expense.LedgerName</td>
+                                            <td class="text-right">@expense.Amount.ToString("C")</td>
+                                        </tr>
+                                    }
+                                    <tr class="font-weight-bold">
+                                        <td>TOTAL EXPENDITURE</td>
+                                        <td class="text-right">@Model.TotalExpenditure.ToString("C")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <h5>SURPLUS/(DEFICIT): @Model.SurplusDeficit.ToString("C")</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

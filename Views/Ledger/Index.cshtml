@@ -1,0 +1,54 @@
+@model List<FinanceApp.Models.Ledger>
+@{
+    ViewData["Title"] = "Ledgers";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Ledgers</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="@Url.Action("Create")" class="btn btn-primary">Create New Ledger</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Ledger Code</th>
+                            <th>Ledger Name</th>
+                            <th>Group</th>
+                            <th>Opening Balance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ledger in Model)
+                        {
+                            <tr>
+                                <td>@ledger.LedgerCode</td>
+                                <td>@ledger.LedgerName</td>
+                                <td>@ledger.Group?.GroupName</td>
+                                <td>@ledger.OpeningBalance.ToString("C") (@ledger.OpeningBalanceType)</td>
+                                <td>
+                                    <a href="@Url.Action("Edit", new { id = ledger.LedgerID })" class="btn btn-sm btn-info">Edit</a>
+                                    <form asp-action="Delete" method="post" style="display:inline">
+                                        <input type="hidden" name="id" value="@ledger.LedgerID" />
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

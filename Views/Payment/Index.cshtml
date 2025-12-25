@@ -1,0 +1,50 @@
+@model List<FinanceApp.Models.JournalEntry>
+@{
+    ViewData["Title"] = "Payment Vouchers";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Payment Vouchers</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="@Url.Action("Create")" class="btn btn-primary">Create New Payment</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Voucher Number</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Reference</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var payment in Model)
+                        {
+                            <tr>
+                                <td>@payment.EntryNumber</td>
+                                <td>@payment.EntryDate.ToString("dd/MM/yyyy")</td>
+                                <td>@payment.TotalDebit.ToString("C")</td>
+                                <td>@payment.ReferenceNumber</td>
+                                <td>
+                                    <a href="@Url.Action("Details", new { id = payment.EntryID })" class="btn btn-sm btn-info">View</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

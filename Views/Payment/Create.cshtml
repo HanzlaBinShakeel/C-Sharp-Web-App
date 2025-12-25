@@ -1,0 +1,74 @@
+@model FinanceApp.Models.ViewModels.PaymentVoucherViewModel
+@{
+    ViewData["Title"] = "Payment Entry";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Payment Entry</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div class="form-group">
+                        <label asp-for="VoucherDate"></label>
+                        <input asp-for="VoucherDate" class="form-control" type="date" />
+                        <span asp-validation-for="VoucherDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PaidToLedgerID"></label>
+                        <select asp-for="PaidToLedgerID" class="form-control" asp-items="@(new SelectList(ViewBag.Ledgers, "LedgerID", "LedgerName"))">
+                            <option value="">Select Party</option>
+                        </select>
+                        <span asp-validation-for="PaidToLedgerID" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PaidFromLedgerID"></label>
+                        <select asp-for="PaidFromLedgerID" class="form-control" asp-items="@(new SelectList(ViewBag.Ledgers, "LedgerID", "LedgerName"))">
+                            <option value="">Select Cash/Bank Account</option>
+                        </select>
+                        <span asp-validation-for="PaidFromLedgerID" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Amount"></label>
+                        <input asp-for="Amount" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PaymentMode"></label>
+                        <select asp-for="PaymentMode" class="form-control">
+                            <option value="Cash">Cash</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="Online">Online</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ChequeNumber"></label>
+                        <input asp-for="ChequeNumber" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ReferenceNumber"></label>
+                        <input asp-for="ReferenceNumber" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Narration"></label>
+                        <textarea asp-for="Narration" class="form-control"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Payment</button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

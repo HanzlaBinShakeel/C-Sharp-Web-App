@@ -1,0 +1,55 @@
+@model List<FinanceApp.Models.Schedule>
+@{
+    ViewData["Title"] = "Schedules";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Schedules</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="@Url.Action("Create")" class="btn btn-primary">Create New Schedule</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Schedule Code</th>
+                            <th>Schedule Name</th>
+                            <th>Schedule Type</th>
+                            <th>Linked Ledger</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var schedule in Model)
+                        {
+                            <tr>
+                                <td>@schedule.ScheduleCode</td>
+                                <td>@schedule.ScheduleName</td>
+                                <td>@schedule.ScheduleType</td>
+                                <td>@(schedule.LinkedLedger?.LedgerName ?? "-")</td>
+                                <td>
+                                    <a href="@Url.Action("Details", new { id = schedule.ScheduleID })" class="btn btn-sm btn-info">View</a>
+                                    <a href="@Url.Action("Edit", new { id = schedule.ScheduleID })" class="btn btn-sm btn-warning">Edit</a>
+                                    <form asp-action="Delete" method="post" style="display:inline">
+                                        <input type="hidden" name="id" value="@schedule.ScheduleID" />
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

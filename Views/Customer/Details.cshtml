@@ -1,0 +1,153 @@
+@model FinanceApp.Models.Customer
+@{
+    ViewData["Title"] = "Customer Details";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-users mr-2"></i>Customer Details</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-info-circle mr-2"></i>@Model.CustomerName</h4>
+                <a href="@Url.Action("Edit", new { id = Model.CustomerID })" class="btn btn-gradient-primary">
+                    <i class="fas fa-edit mr-1"></i>Edit
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-primary mb-3">Basic Information</h5>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th width="40%">Customer Code:</th>
+                                <td>@Model.CustomerCode</td>
+                            </tr>
+                            <tr>
+                                <th>Customer Name:</th>
+                                <td>@Model.CustomerName</td>
+                            </tr>
+                            <tr>
+                                <th>Contact Person:</th>
+                                <td>@(Model.ContactPerson ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>@(Model.Email ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>Phone:</th>
+                                <td>@(Model.Phone ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>Mobile:</th>
+                                <td>@(Model.Mobile ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td>
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-secondary">Inactive</span>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-primary mb-3">Address & Banking</h5>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th width="40%">Address:</th>
+                                <td>@(Model.Address ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>City:</th>
+                                <td>@(Model.City ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>State:</th>
+                                <td>@(Model.State ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>Zip Code:</th>
+                                <td>@(Model.ZipCode ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>Tax ID:</th>
+                                <td>@(Model.TaxID ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>Bank Name:</th>
+                                <td>@(Model.BankName ?? "-")</td>
+                            </tr>
+                            <tr>
+                                <th>Account Number:</th>
+                                <td>@(Model.BankAccountNumber ?? "-")</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h5 class="text-primary mb-3">Financial Information</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card bg-gradient-primary text-white">
+                                    <div class="card-body">
+                                        <h6>Credit Limit</h6>
+                                        <h3>@Model.CreditLimit.ToString("C")</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-gradient-info text-white">
+                                    <div class="card-body">
+                                        <h6>Opening Balance</h6>
+                                        <h3>@Model.OpeningBalance.ToString("C")</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-gradient-success text-white">
+                                    <div class="card-body">
+                                        <h6>Current Balance</h6>
+                                        <h3>@ViewBag.Balance.ToString("C")</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <div class="card bg-gradient-warning text-white">
+                                    <div class="card-body">
+                                        <h6>Outstanding Amount</h6>
+                                        <h3>@ViewBag.Outstanding.ToString("C")</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

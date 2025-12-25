@@ -1,0 +1,76 @@
+@model List<FinanceApp.Models.Vendor>
+@{
+    ViewData["Title"] = "Vendors";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-truck mr-2"></i>Vendors</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-list mr-2"></i>Vendor List</h4>
+                <a href="@Url.Action("Create")" class="btn btn-gradient-primary">
+                    <i class="fas fa-plus mr-1"></i>Create New Vendor
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover modern-table">
+                        <thead class="modern-table-header">
+                            <tr>
+                                <th>Vendor Code</th>
+                                <th>Vendor Name</th>
+                                <th>Contact Person</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var vendor in Model)
+                            {
+                                <tr>
+                                    <td>@vendor.VendorCode</td>
+                                    <td>@vendor.VendorName</td>
+                                    <td>@(vendor.ContactPerson ?? "-")</td>
+                                    <td>@(vendor.Email ?? "-")</td>
+                                    <td>@(vendor.Phone ?? "-")</td>
+                                    <td>
+                                        @if (vendor.IsActive)
+                                        {
+                                            <span class="badge badge-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Details", new { id = vendor.VendorID })" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                        <a href="@Url.Action("Edit", new { id = vendor.VendorID })" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = vendor.VendorID })" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

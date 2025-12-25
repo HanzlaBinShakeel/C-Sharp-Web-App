@@ -1,0 +1,82 @@
+@model FinanceApp.Services.APAgingReport
+@{
+    ViewData["Title"] = "AP Aging Report";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-file-invoice-dollar mr-2"></i>AP Aging Report</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-chart-bar mr-2"></i>Accounts Payable Aging</h4>
+                <form method="post" class="form-inline">
+                    <div class="form-group mr-2">
+                        <label>As of Date:</label>
+                        <input type="date" name="asOfDate" value="@(ViewBag.AsOfDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd"))" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary mr-2">Generate</button>
+                    @if (Model != null)
+                    {
+                        <a href="@Url.Action("ExportPDF", new { asOfDate = ViewBag.AsOfDate })" class="btn btn-success mr-2">
+                            <i class="fas fa-file-pdf mr-1"></i>Export PDF
+                        </a>
+                        <a href="@Url.Action("ExportExcel", new { asOfDate = ViewBag.AsOfDate })" class="btn btn-info">
+                            <i class="fas fa-file-excel mr-1"></i>Export Excel
+                        </a>
+                    }
+                </form>
+            </div>
+            @if (Model != null)
+            {
+                <div class="card-body">
+                    <h4 class="text-center mb-4">Accounts Payable Aging Report as on @Model.AsOfDate.ToString("dd/MM/yyyy")</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered modern-table">
+                            <thead class="modern-table-header">
+                                <tr>
+                                    <th>Vendor Code</th>
+                                    <th>Vendor Name</th>
+                                    <th class="text-right">Current (0-30)</th>
+                                    <th class="text-right">30 Days</th>
+                                    <th class="text-right">60 Days</th>
+                                    <th class="text-right">90+ Days</th>
+                                    <th class="text-right">Total Outstanding</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>@item.VendorCode</td>
+                                        <td>@item.VendorName</td>
+                                        <td class="text-right">@item.Current.ToString("C")</td>
+                                        <td class="text-right">@item.Days30.ToString("C")</td>
+                                        <td class="text-right">@item.Days60.ToString("C")</td>
+                                        <td class="text-right">@item.Days90.ToString("C")</td>
+                                        <td class="text-right font-weight-bold">@item.TotalOutstanding.ToString("C")</td>
+                                    </tr>
+                                }
+                                <tr class="font-weight-bold bg-light">
+                                    <td colspan="2">TOTAL</td>
+                                    <td class="text-right">@Model.TotalCurrent.ToString("C")</td>
+                                    <td class="text-right">@Model.Total30Days.ToString("C")</td>
+                                    <td class="text-right">@Model.Total60Days.ToString("C")</td>
+                                    <td class="text-right">@Model.Total90Days.ToString("C")</td>
+                                    <td class="text-right">@Model.GrandTotal.ToString("C")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

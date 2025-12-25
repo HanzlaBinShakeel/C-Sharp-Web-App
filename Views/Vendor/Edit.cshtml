@@ -1,0 +1,155 @@
+@model FinanceApp.Models.Vendor
+@{
+    ViewData["Title"] = "Edit Vendor";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-truck mr-2"></i>Edit Vendor</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-edit mr-2"></i>Vendor Information</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="VendorID" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="VendorCode" class="control-label">Vendor Code *</label>
+                                <input asp-for="VendorCode" class="form-control modern-input" />
+                                <span asp-validation-for="VendorCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="VendorName" class="control-label">Vendor Name *</label>
+                                <input asp-for="VendorName" class="form-control modern-input" />
+                                <span asp-validation-for="VendorName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ContactPerson" class="control-label">Contact Person</label>
+                                <input asp-for="ContactPerson" class="form-control modern-input" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label">Email</label>
+                                <input asp-for="Email" type="email" class="form-control modern-input" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Phone" class="control-label">Phone</label>
+                                <input asp-for="Phone" class="form-control modern-input" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Mobile" class="control-label">Mobile</label>
+                                <input asp-for="Mobile" class="form-control modern-input" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label">Address</label>
+                        <textarea asp-for="Address" class="form-control modern-input" rows="3"></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="City" class="control-label">City</label>
+                                <input asp-for="City" class="form-control modern-input" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="State" class="control-label">State</label>
+                                <input asp-for="State" class="form-control modern-input" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="ZipCode" class="control-label">Zip Code</label>
+                                <input asp-for="ZipCode" class="form-control modern-input" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="TaxID" class="control-label">Tax ID</label>
+                                <input asp-for="TaxID" class="form-control modern-input" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="LedgerID" class="control-label">Linked Ledger</label>
+                                <select asp-for="LedgerID" class="form-control modern-input" asp-items="ViewBag.Ledgers">
+                                    <option value="">-- Select Ledger --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CreditLimit" class="control-label">Credit Limit</label>
+                                <input asp-for="CreditLimit" type="number" step="0.01" class="form-control modern-input" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="OpeningBalance" class="control-label">Opening Balance</label>
+                                <input asp-for="OpeningBalance" type="number" step="0.01" class="form-control modern-input" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label">Active</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-gradient-primary">
+                            <i class="fas fa-save mr-1"></i>Update Vendor
+                        </button>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="fas fa-times mr-1"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

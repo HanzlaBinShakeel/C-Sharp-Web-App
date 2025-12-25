@@ -1,0 +1,87 @@
+@{
+    ViewData["Title"] = "Bank Reconciliation Statement";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Bank Reconciliation Statement</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <form method="post" class="form-inline">
+                    <div class="form-group mr-2">
+                        <label>Bank Account:</label>
+                        <select name="ledgerId" class="form-control" asp-items="@(new SelectList(ViewBag.BankLedgers, "LedgerID", "LedgerName"))">
+                            <option value="">Select Bank</option>
+                        </select>
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>Statement Date:</label>
+                        <input type="date" name="statementDate" value="@ViewBag.StatementDate.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Generate</button>
+                </form>
+            </div>
+            @if (ViewBag.Report != null)
+            {
+                var report = ViewBag.Report as FinanceApp.Services.BRSReport;
+                <div class="card-body">
+                    <h4 class="text-center">@report.BankName - @report.StatementDate.ToString("dd/MM/yyyy")</h4>
+                    <table class="table table-bordered mt-3">
+                        <tr>
+                            <td><strong>Book Balance as per Ledger</strong></td>
+                            <td class="text-right">@report.BookBalance.ToString("C")</td>
+                        </tr>
+                        @if (report.AddItems.Any())
+                        {
+                            <tr>
+                                <td><strong>ADD: Items to be added</strong></td>
+                                <td></td>
+                            </tr>
+                            @foreach (var item in report.AddItems)
+                            {
+                                <tr>
+                                    <td style="padding-left: 30px;">@item.Description (@item.ItemType)</td>
+                                    <td class="text-right">@item.Amount.ToString("C")</td>
+                                </tr>
+                            }
+                        }
+                        @if (report.LessItems.Any())
+                        {
+                            <tr>
+                                <td><strong>LESS: Items to be deducted</strong></td>
+                                <td></td>
+                            </tr>
+                            @foreach (var item in report.LessItems)
+                            {
+                                <tr>
+                                    <td style="padding-left: 30px;">@item.Description (@item.ItemType)</td>
+                                    <td class="text-right">@item.Amount.ToString("C")</td>
+                                </tr>
+                            }
+                        }
+                        <tr class="font-weight-bold">
+                            <td>RECONCILED BALANCE</td>
+                            <td class="text-right">@report.ReconciledBalance.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Statement Balance as per Bank</strong></td>
+                            <td class="text-right">@report.StatementBalance.ToString("C")</td>
+                        </tr>
+                        <tr class="font-weight-bold">
+                            <td>DIFFERENCE</td>
+                            <td class="text-right">@report.Difference.ToString("C")</td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

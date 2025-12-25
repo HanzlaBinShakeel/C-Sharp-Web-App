@@ -1,0 +1,99 @@
+@model FinanceApp.Services.ReceiptPaymentReport
+@{
+    ViewData["Title"] = "Receipt & Payment Report";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Receipt & Payment Report</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <form method="post" class="form-inline">
+                    <div class="form-group mr-2">
+                        <label>From Date:</label>
+                        <input type="date" name="fromDate" value="@ViewBag.FromDate.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>To Date:</label>
+                        <input type="date" name="toDate" value="@ViewBag.ToDate.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Generate</button>
+                    @if (Model != null)
+                    {
+                        <a href="@Url.Action("ExportPDF", new { fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="btn btn-success mr-2">Export PDF</a>
+                        <a href="@Url.Action("ExportExcel", new { fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="btn btn-info">Export Excel</a>
+                    }
+                </form>
+            </div>
+            @if (Model != null)
+            {
+                <div class="card-body">
+                    <h4 class="text-center">Receipt & Payment Report - @Model.FromDate.ToString("dd/MM/yyyy") to @Model.ToDate.ToString("dd/MM/yyyy")</h4>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>RECEIPTS</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var receipt in Model.Receipts)
+                                    {
+                                        <tr>
+                                            <td>@receipt.LedgerName</td>
+                                            <td class="text-right">@receipt.Amount.ToString("C")</td>
+                                        </tr>
+                                    }
+                                    <tr class="font-weight-bold">
+                                        <td>TOTAL RECEIPTS</td>
+                                        <td class="text-right">@Model.TotalReceipts.ToString("C")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>PAYMENTS</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var payment in Model.Payments)
+                                    {
+                                        <tr>
+                                            <td>@payment.LedgerName</td>
+                                            <td class="text-right">@payment.Amount.ToString("C")</td>
+                                        </tr>
+                                    }
+                                    <tr class="font-weight-bold">
+                                        <td>TOTAL PAYMENTS</td>
+                                        <td class="text-right">@Model.TotalPayments.ToString("C")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <h5>NET CASH FLOW: @Model.NetCashFlow.ToString("C")</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

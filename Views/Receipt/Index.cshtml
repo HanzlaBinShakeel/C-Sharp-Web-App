@@ -1,0 +1,50 @@
+@model List<FinanceApp.Models.JournalEntry>
+@{
+    ViewData["Title"] = "Receipt Vouchers";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Receipt Vouchers</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="@Url.Action("Create")" class="btn btn-primary">Create New Receipt</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Voucher Number</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Reference</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var receipt in Model)
+                        {
+                            <tr>
+                                <td>@receipt.EntryNumber</td>
+                                <td>@receipt.EntryDate.ToString("dd/MM/yyyy")</td>
+                                <td>@receipt.TotalDebit.ToString("C")</td>
+                                <td>@receipt.ReferenceNumber</td>
+                                <td>
+                                    <a href="@Url.Action("Details", new { id = receipt.EntryID })" class="btn btn-sm btn-info">View</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

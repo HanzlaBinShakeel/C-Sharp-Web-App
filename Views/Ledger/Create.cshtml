@@ -1,0 +1,62 @@
+@model FinanceApp.Models.Ledger
+@{
+    ViewData["Title"] = "Create Ledger";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Create Ledger</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div class="form-group">
+                        <label asp-for="LedgerCode"></label>
+                        <input asp-for="LedgerCode" class="form-control" />
+                        <span asp-validation-for="LedgerCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LedgerName"></label>
+                        <input asp-for="LedgerName" class="form-control" />
+                        <span asp-validation-for="LedgerName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="GroupID"></label>
+                        <select asp-for="GroupID" class="form-control" asp-items="@(new SelectList(ViewBag.Groups, "GroupID", "GroupName"))">
+                            <option value="">Select Group</option>
+                        </select>
+                        <span asp-validation-for="GroupID" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OpeningBalance"></label>
+                        <input asp-for="OpeningBalance" class="form-control" type="number" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OpeningBalanceType"></label>
+                        <select asp-for="OpeningBalanceType" class="form-control">
+                            <option value="Debit">Debit</option>
+                            <option value="Credit">Credit</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address"></label>
+                        <textarea asp-for="Address" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ContactInfo"></label>
+                        <input asp-for="ContactInfo" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

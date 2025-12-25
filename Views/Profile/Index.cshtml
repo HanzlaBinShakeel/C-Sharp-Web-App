@@ -1,0 +1,201 @@
+@model FinanceApp.Controllers.ProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-user mr-2"></i>My Profile</h2>
+        </div>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle mr-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-xl-8">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-edit mr-2"></i>Profile Information</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="UpdateProfile" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="UserName" class="control-label">Username</label>
+                                <input asp-for="UserName" class="form-control modern-input" readonly />
+                                <small class="form-text text-muted">Username cannot be changed</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label">Email Address *</label>
+                                <input asp-for="Email" class="form-control modern-input" type="email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
+                                <input asp-for="PhoneNumber" class="form-control modern-input" type="tel" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Email Status</label>
+                                <div class="form-control modern-input" style="background-color: #f8f9fa;">
+                                    @if (Model.EmailConfirmed)
+                                    {
+                                        <span class="badge badge-success"><i class="fas fa-check-circle mr-1"></i>Confirmed</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-warning"><i class="fas fa-exclamation-circle mr-1"></i>Not Confirmed</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-gradient-primary">
+                            <i class="fas fa-save mr-1"></i>Update Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card modern-card mt-4">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-key mr-2"></i>Change Password</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="ChangePassword" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    
+                    <div class="form-group">
+                        <label for="CurrentPassword" class="control-label">Current Password *</label>
+                        <input name="CurrentPassword" type="password" class="form-control modern-input" required />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="NewPassword" class="control-label">New Password *</label>
+                                <input name="NewPassword" type="password" class="form-control modern-input" required />
+                                <small class="form-text text-muted">Minimum 6 characters</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ConfirmPassword" class="control-label">Confirm New Password *</label>
+                                <input name="ConfirmPassword" type="password" class="form-control modern-input" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-gradient-primary">
+                            <i class="fas fa-lock mr-1"></i>Change Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-info-circle mr-2"></i>Account Information</h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Two-Factor Authentication:</strong>
+                    <div class="mt-1">
+                        @if (Model.TwoFactorEnabled)
+                        {
+                            <span class="badge badge-success"><i class="fas fa-check mr-1"></i>Enabled</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-secondary"><i class="fas fa-times mr-1"></i>Disabled</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Account Lockout:</strong>
+                    <div class="mt-1">
+                        @if (Model.LockoutEnabled)
+                        {
+                            <span class="badge badge-info"><i class="fas fa-lock mr-1"></i>Enabled</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-secondary"><i class="fas fa-unlock mr-1"></i>Disabled</span>
+                        }
+                    </div>
+                </div>
+
+                @if (Model.LockoutEnd.HasValue && Model.LockoutEnd.Value > DateTime.Now)
+                {
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Account locked until: @Model.LockoutEnd.Value.ToString("g")
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (ViewBag.RecentActivity != null)
+        {
+            <div class="card modern-card mt-4">
+                <div class="card-header modern-card-header">
+                    <h4 class="mb-0"><i class="fas fa-history mr-2"></i>Recent Activity</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        @foreach (var activity in ViewBag.RecentActivity as List<FinanceApp.Models.AuditLog> ?? new List<FinanceApp.Models.AuditLog>())
+                        {
+                            <div class="list-group-item px-0 py-2">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">@activity.Action</h6>
+                                    <small>@activity.ActionDate.ToString("g")</small>
+                                </div>
+                                <p class="mb-1 small text-muted">@activity.Description</p>
+                                <small class="text-muted">@activity.EntityType</small>
+                            </div>
+                        }
+                    </div>
+                    @if ((ViewBag.RecentActivity as List<FinanceApp.Models.AuditLog>)?.Count == 0)
+                    {
+                        <p class="text-muted text-center mb-0">No recent activity</p>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

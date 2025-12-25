@@ -1,0 +1,94 @@
+@model FinanceApp.Controllers.ReportSettingsViewModel
+@{
+    ViewData["Title"] = "Report Settings";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-file-pdf mr-2"></i>Report Settings</h2>
+            <a href="@Url.Action("Index")" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left mr-1"></i>Back to Settings
+            </a>
+        </div>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle mr-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-xl-8">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-cog mr-2"></i>Report Configuration</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="UpdateReportSettings" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="form-group">
+                        <label asp-for="CompanyName" class="control-label">Company Name</label>
+                        <input asp-for="CompanyName" class="form-control modern-input" />
+                        <span asp-validation-for="CompanyName" class="text-danger"></span>
+                        <small class="form-text text-muted">This will appear on the header of all reports</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CompanyAddress" class="control-label">Company Address</label>
+                        <textarea asp-for="CompanyAddress" class="form-control modern-input" rows="4"></textarea>
+                        <span asp-validation-for="CompanyAddress" class="text-danger"></span>
+                        <small class="form-text text-muted">Company address to display on reports</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ReportFooter" class="control-label">Report Footer Text</label>
+                        <textarea asp-for="ReportFooter" class="form-control modern-input" rows="3"></textarea>
+                        <span asp-validation-for="ReportFooter" class="text-danger"></span>
+                        <small class="form-text text-muted">Text to display at the bottom of all reports</small>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-gradient-primary">
+                            <i class="fas fa-save mr-1"></i>Save Settings
+                        </button>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="fas fa-times mr-1"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-info-circle mr-2"></i>Information</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">
+                    These settings will be used for all generated reports including:
+                </p>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success mr-2"></i>Balance Sheet</li>
+                    <li><i class="fas fa-check text-success mr-2"></i>Profit & Loss</li>
+                    <li><i class="fas fa-check text-success mr-2"></i>Trial Balance</li>
+                    <li><i class="fas fa-check text-success mr-2"></i>All Financial Reports</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

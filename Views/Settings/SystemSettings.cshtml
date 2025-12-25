@@ -1,0 +1,81 @@
+@{
+    ViewData["Title"] = "System Settings";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-server mr-2"></i>System Settings</h2>
+            <a href="@Url.Action("Index")" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left mr-1"></i>Back to Settings
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-8">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-info-circle mr-2"></i>System Information</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th width="30%">Application Name:</th>
+                            <td>Finance App</td>
+                        </tr>
+                        <tr>
+                            <th>Version:</th>
+                            <td>1.0.0</td>
+                        </tr>
+                        <tr>
+                            <th>Database:</th>
+                            <td>SQL Server LocalDB</td>
+                        </tr>
+                        <tr>
+                            <th>Framework:</th>
+                            <td>.NET 10.0</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card modern-card mt-4">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-database mr-2"></i>Database Management</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Database management features will be available here.</p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    All data is stored securely in the local database. Regular backups are recommended.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-tools mr-2"></i>Maintenance</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">System maintenance tools and utilities.</p>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item px-0">
+                        <small class="text-muted">Last Backup:</small><br />
+                        <strong>Not configured</strong>
+                    </div>
+                    <div class="list-group-item px-0">
+                        <small class="text-muted">System Status:</small><br />
+                        <span class="badge badge-success"><i class="fas fa-check-circle mr-1"></i>Operational</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

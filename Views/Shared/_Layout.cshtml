@@ -1,0 +1,212 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Finance App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/vendor/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/libs/css/style.css" />
+    <link rel="stylesheet" href="~/assets/vendor/fonts/fontawesome/css/fontawesome-all.css" />
+    <link rel="stylesheet" href="~/assets/vendor/datatables/css/dataTables.bootstrap4.css" />
+    <link rel="stylesheet" href="~/css/modern-style.css" />
+</head>
+<body>
+    <div class="dashboard-main-wrapper">
+        <div class="dashboard-header">
+            <nav class="navbar navbar-expand-lg bg-white fixed-top">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                        <i class="fas fa-chart-line mr-2"></i>Finance App
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Home")" style="color: #1e293b !important; font-weight: 700; background: #f8fafc; border: 1px solid #e2e8f0; padding: 0.6rem 1.2rem;">
+                                    <i class="fas fa-home mr-1"></i> Dashboard
+                                </a>
+                            </li>
+                            <partial name="_LoginPartial" />
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="nav-left-sidebar sidebar-dark">
+            <div class="menu-list">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-divider">
+                                <i class="fas fa-bars mr-2"></i>Menu
+                            </li>
+                            <li class="nav-item @(controller == "Home" ? "active" : "")">
+                                <a class="nav-link @(controller == "Home" ? "active" : "")" href="@Url.Action("Index", "Home")">
+                                    <i class="fas fa-home"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-divider">
+                                <i class="fas fa-database mr-2"></i>Masters
+                            </li>
+                            <li class="nav-item @(controller == "AccountGroup" ? "active" : "")">
+                                <a class="nav-link @(controller == "AccountGroup" ? "active" : "")" href="@Url.Action("Index", "AccountGroup")">
+                                    <i class="fas fa-folder-open"></i> Account Groups
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "Ledger" ? "active" : "")">
+                                <a class="nav-link @(controller == "Ledger" ? "active" : "")" href="@Url.Action("Index", "Ledger")">
+                                    <i class="fas fa-book"></i> Ledgers
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "Schedule" ? "active" : "")">
+                                <a class="nav-link @(controller == "Schedule" ? "active" : "")" href="@Url.Action("Index", "Schedule")">
+                                    <i class="fas fa-list-ul"></i> Schedules
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "Vendor" ? "active" : "")">
+                                <a class="nav-link @(controller == "Vendor" ? "active" : "")" href="@Url.Action("Index", "Vendor")">
+                                    <i class="fas fa-truck"></i> Vendors
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "Customer" ? "active" : "")">
+                                <a class="nav-link @(controller == "Customer" ? "active" : "")" href="@Url.Action("Index", "Customer")">
+                                    <i class="fas fa-users"></i> Customers
+                                </a>
+                            </li>
+                            <li class="nav-divider">
+                                <i class="fas fa-cog mr-2"></i>Setup
+                            </li>
+                            <li class="nav-item @(controller == "FinancialYear" ? "active" : "")">
+                                <a class="nav-link @(controller == "FinancialYear" ? "active" : "")" href="@Url.Action("Index", "FinancialYear")">
+                                    <i class="fas fa-calendar-alt"></i> Financial Years
+                                </a>
+                            </li>
+                            <li class="nav-divider">
+                                <i class="fas fa-calculator mr-2"></i>Accounting
+                            </li>
+                            <li class="nav-item @(controller == "Receipt" ? "active" : "")">
+                                <a class="nav-link @(controller == "Receipt" ? "active" : "")" href="@Url.Action("Index", "Receipt")">
+                                    <i class="fas fa-arrow-circle-down"></i> Receipt Entry
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "Payment" ? "active" : "")">
+                                <a class="nav-link @(controller == "Payment" ? "active" : "")" href="@Url.Action("Index", "Payment")">
+                                    <i class="fas fa-arrow-circle-up"></i> Payment Entry
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "Journal" ? "active" : "")">
+                                <a class="nav-link @(controller == "Journal" ? "active" : "")" href="@Url.Action("Index", "Journal")">
+                                    <i class="fas fa-file-invoice"></i> Journal Entry
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "Contra" ? "active" : "")">
+                                <a class="nav-link @(controller == "Contra" ? "active" : "")" href="@Url.Action("Index", "Contra")">
+                                    <i class="fas fa-exchange-alt"></i> Contra Entry
+                                </a>
+                            </li>
+                            <li class="nav-divider">
+                                <i class="fas fa-chart-bar mr-2"></i>Reports
+                            </li>
+                            <li class="nav-item @(controller == "BalanceSheet" ? "active" : "")">
+                                <a class="nav-link @(controller == "BalanceSheet" ? "active" : "")" href="@Url.Action("Index", "BalanceSheet")">
+                                    <i class="fas fa-balance-scale"></i> Balance Sheet
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "TrialBalance" ? "active" : "")">
+                                <a class="nav-link @(controller == "TrialBalance" ? "active" : "")" href="@Url.Action("Index", "TrialBalance")">
+                                    <i class="fas fa-table"></i> Trial Balance
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "ScheduleReport" ? "active" : "")">
+                                <a class="nav-link @(controller == "ScheduleReport" ? "active" : "")" href="@Url.Action("Index", "ScheduleReport")">
+                                    <i class="fas fa-list-alt"></i> Schedule Report
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "Cashbook" ? "active" : "")">
+                                <a class="nav-link @(controller == "Cashbook" ? "active" : "")" href="@Url.Action("Index", "Cashbook")">
+                                    <i class="fas fa-money-bill-wave"></i> Cashbook
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "ReceiptPayment" ? "active" : "")">
+                                <a class="nav-link @(controller == "ReceiptPayment" ? "active" : "")" href="@Url.Action("Index", "ReceiptPayment")">
+                                    <i class="fas fa-chart-line"></i> Receipt & Payment
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "IncomeExpenditure" ? "active" : "")">
+                                <a class="nav-link @(controller == "IncomeExpenditure" ? "active" : "")" href="@Url.Action("Index", "IncomeExpenditure")">
+                                    <i class="fas fa-chart-pie"></i> Income & Expenditure
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "ProfitLoss" ? "active" : "")">
+                                <a class="nav-link @(controller == "ProfitLoss" ? "active" : "")" href="@Url.Action("Index", "ProfitLoss")">
+                                    <i class="fas fa-chart-line"></i> Profit & Loss
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "APAging" ? "active" : "")">
+                                <a class="nav-link @(controller == "APAging" ? "active" : "")" href="@Url.Action("Index", "APAging")">
+                                    <i class="fas fa-file-invoice-dollar"></i> AP Aging
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "ARAging" ? "active" : "")">
+                                <a class="nav-link @(controller == "ARAging" ? "active" : "")" href="@Url.Action("Index", "ARAging")">
+                                    <i class="fas fa-receipt"></i> AR Aging
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "BRS" ? "active" : "")">
+                                <a class="nav-link @(controller == "BRS" ? "active" : "")" href="@Url.Action("Index", "BRS")">
+                                    <i class="fas fa-university"></i> BRS Report
+                                </a>
+                            </li>
+                            <li class="nav-item @(controller == "LedgerReconciliation" ? "active" : "")">
+                                <a class="nav-link @(controller == "LedgerReconciliation" ? "active" : "")" href="@Url.Action("Index", "LedgerReconciliation")">
+                                    <i class="fas fa-file-contract"></i> Ledger Reconciliation
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="dashboard-wrapper">
+            <div class="container-fluid dashboard-content">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["Success"]
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @TempData["Error"]
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                }
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="~/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="~/assets/libs/js/main-js.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

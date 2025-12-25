@@ -1,0 +1,109 @@
+@model FinanceApp.Services.ProfitLossReport
+@{
+    ViewData["Title"] = "Profit & Loss Statement";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-chart-line mr-2"></i>Profit & Loss Statement</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-chart-bar mr-2"></i>Profit & Loss Report</h4>
+                <form method="post" class="form-inline">
+                    <div class="form-group mr-2">
+                        <label>From Date:</label>
+                        <input type="date" name="fromDate" value="@(ViewBag.FromDate?.ToString("yyyy-MM-dd") ?? new DateTime(DateTime.Now.Year, 4, 1).ToString("yyyy-MM-dd"))" class="form-control" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>To Date:</label>
+                        <input type="date" name="toDate" value="@(ViewBag.ToDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd"))" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary mr-2">Generate</button>
+                    @if (Model != null)
+                    {
+                        <a href="@Url.Action("ExportPDF", new { fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="btn btn-success mr-2">
+                            <i class="fas fa-file-pdf mr-1"></i>Export PDF
+                        </a>
+                        <a href="@Url.Action("ExportExcel", new { fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="btn btn-info">
+                            <i class="fas fa-file-excel mr-1"></i>Export Excel
+                        </a>
+                    }
+                </form>
+            </div>
+            @if (Model != null)
+            {
+                <div class="card-body">
+                    <h4 class="text-center mb-4">Profit & Loss Statement for the period @Model.FromDate.ToString("dd/MM/yyyy") to @Model.ToDate.ToString("dd/MM/yyyy")</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-success mb-3">INCOME</h5>
+                            <table class="table table-bordered modern-table">
+                                <thead class="modern-table-header">
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var income in Model.Income)
+                                    {
+                                        <tr>
+                                            <td>@income.LedgerName</td>
+                                            <td class="text-right">@income.Amount.ToString("C")</td>
+                                        </tr>
+                                    }
+                                    <tr class="font-weight-bold bg-light">
+                                        <td>TOTAL INCOME</td>
+                                        <td class="text-right">@Model.TotalIncome.ToString("C")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-danger mb-3">EXPENSES</h5>
+                            <table class="table table-bordered modern-table">
+                                <thead class="modern-table-header">
+                                    <tr>
+                                        <th>Particulars</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var expense in Model.Expenses)
+                                    {
+                                        <tr>
+                                            <td>@expense.LedgerName</td>
+                                            <td class="text-right">@expense.Amount.ToString("C")</td>
+                                        </tr>
+                                    }
+                                    <tr class="font-weight-bold bg-light">
+                                        <td>TOTAL EXPENSES</td>
+                                        <td class="text-right">@Model.TotalExpenses.ToString("C")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="card @(Model.NetProfit >= 0 ? "bg-success" : "bg-danger") text-white">
+                                <div class="card-body text-center">
+                                    <h3>@(Model.NetProfit >= 0 ? "NET PROFIT" : "NET LOSS")</h3>
+                                    <h2>@Math.Abs(Model.NetProfit).ToString("C")</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

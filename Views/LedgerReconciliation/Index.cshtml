@@ -1,0 +1,82 @@
+@model FinanceApp.Services.LedgerReconciliationReport
+@{
+    ViewData["Title"] = "Ledger Reconciliation";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Ledger Reconciliation</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <form method="post" class="form-inline">
+                    <div class="form-group mr-2">
+                        <label>Ledger:</label>
+                        <select name="ledgerId" class="form-control" asp-items="@(new SelectList(ViewBag.Ledgers, "LedgerID", "LedgerName"))">
+                            <option value="">Select Ledger</option>
+                        </select>
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>From Date:</label>
+                        <input type="date" name="fromDate" value="@ViewBag.FromDate.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>To Date:</label>
+                        <input type="date" name="toDate" value="@ViewBag.ToDate.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Generate</button>
+                    @if (ViewBag.Report != null)
+                    {
+                        var report = ViewBag.Report as FinanceApp.Services.LedgerReconciliationReport;
+                        <a href="@Url.Action("ExportPDF", new { ledgerId = report.LedgerID, fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="btn btn-success mr-2">Export PDF</a>
+                        <a href="@Url.Action("ExportExcel", new { ledgerId = report.LedgerID, fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate })" class="btn btn-info">Export Excel</a>
+                    }
+                </form>
+            </div>
+            @if (ViewBag.Report != null)
+            {
+                var report = ViewBag.Report as FinanceApp.Services.LedgerReconciliationReport;
+                <div class="card-body">
+                    <h4 class="text-center">@report.LedgerName - @report.FromDate.ToString("dd/MM/yyyy") to @report.ToDate.ToString("dd/MM/yyyy")</h4>
+                    <p><strong>Opening Balance:</strong> @report.OpeningBalance.ToString("C")</p>
+                    <table class="table table-bordered mt-3">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Voucher No</th>
+                                <th>Particulars</th>
+                                <th class="text-right">Debit</th>
+                                <th class="text-right">Credit</th>
+                                <th class="text-right">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var trans in report.Transactions)
+                            {
+                                <tr>
+                                    <td>@trans.Date.ToString("dd/MM/yyyy")</td>
+                                    <td>@trans.VoucherNumber</td>
+                                    <td>@trans.Particulars</td>
+                                    <td class="text-right">@(trans.Debit > 0 ? trans.Debit.ToString("C") : "-")</td>
+                                    <td class="text-right">@(trans.Credit > 0 ? trans.Credit.ToString("C") : "-")</td>
+                                    <td class="text-right">@trans.Balance.ToString("C")</td>
+                                </tr>
+                            }
+                            <tr class="font-weight-bold">
+                                <td colspan="5">Closing Balance</td>
+                                <td class="text-right">@report.ClosingBalance.ToString("C")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

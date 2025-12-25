@@ -1,0 +1,98 @@
+@model List<FinanceApp.Controllers.VoucherSettingViewModel>
+@{
+    ViewData["Title"] = "Voucher Settings";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-file-invoice mr-2"></i>Voucher Settings</h2>
+            <a href="@Url.Action("Index")" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left mr-1"></i>Back to Settings
+            </a>
+        </div>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle mr-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle mr-2"></i>@TempData["ErrorMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (ViewBag.ActiveYear != null)
+{
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle mr-2"></i>
+                <strong>Active Financial Year:</strong> @ViewBag.ActiveYear.YearName
+                (@ViewBag.ActiveYear.StartDate.ToString("dd MMM yyyy") - @ViewBag.ActiveYear.EndDate.ToString("dd MMM yyyy"))
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var setting in Model)
+        {
+            <div class="col-xl-6 mb-4">
+                <div class="card modern-card">
+                    <div class="card-header modern-card-header">
+                        <h4 class="mb-0"><i class="fas fa-file-alt mr-2"></i>@setting.VoucherType Vouchers</h4>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="UpdateVoucherSetting" method="post">
+                            <input type="hidden" name="VoucherType" value="@setting.VoucherType" />
+                            <input type="hidden" name="FinancialYearID" value="@setting.FinancialYearID" />
+                            
+                            <div class="form-group">
+                                <label>Prefix</label>
+                                <input name="Prefix" value="@setting.Prefix" class="form-control modern-input" maxlength="10" required />
+                                <small class="form-text text-muted">Prefix for voucher numbers (e.g., "R" for Receipt, "P" for Payment)</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Current Number</label>
+                                <input name="CurrentNumber" type="number" value="@setting.CurrentNumber" class="form-control modern-input" min="1" required />
+                                <small class="form-text text-muted">Next voucher number to be generated</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Example Format</label>
+                                <div class="form-control modern-input" style="background-color: #f8f9fa;">
+                                    <code>@setting.Prefix-@setting.CurrentNumber.ToString().PadLeft(6, '0')</code>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-gradient-primary">
+                                <i class="fas fa-save mr-1"></i>Update Settings
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        Please set an active financial year first in <a href="@Url.Action("Index")">Settings</a>.
+    </div>
+}
+

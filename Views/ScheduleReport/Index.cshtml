@@ -1,0 +1,76 @@
+@model FinanceApp.Services.ScheduleReport
+@{
+    ViewData["Title"] = "Schedule Report";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Schedule Report</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <form method="post" class="form-inline">
+                    <div class="form-group mr-2">
+                        <label>Schedule:</label>
+                        <select name="scheduleId" class="form-control" asp-items="@(new SelectList(ViewBag.Schedules, "ScheduleID", "ScheduleName"))">
+                            <option value="">Select Schedule</option>
+                        </select>
+                    </div>
+                    <div class="form-group mr-2">
+                        <label>As of Date:</label>
+                        <input type="date" name="asOfDate" value="@ViewBag.AsOfDate.ToString("yyyy-MM-dd")" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Generate</button>
+                    @if (ViewBag.Report != null)
+                    {
+                        var report = ViewBag.Report as FinanceApp.Services.ScheduleReport;
+                        <a href="@Url.Action("ExportPDF", new { scheduleId = report.ScheduleID, asOfDate = ViewBag.AsOfDate })" class="btn btn-success mr-2">Export PDF</a>
+                        <a href="@Url.Action("ExportExcel", new { scheduleId = report.ScheduleID, asOfDate = ViewBag.AsOfDate })" class="btn btn-info">Export Excel</a>
+                    }
+                </form>
+            </div>
+            @if (ViewBag.Report != null)
+            {
+                var report = ViewBag.Report as FinanceApp.Services.ScheduleReport;
+                <div class="card-body">
+                    <h4 class="text-center">@report.ScheduleName - @report.AsOfDate.ToString("dd/MM/yyyy")</h4>
+                    <table class="table table-bordered mt-3">
+                        <thead>
+                            <tr>
+                                <th>Item Code</th>
+                                <th>Item Name</th>
+                                <th class="text-right">Amount</th>
+                                <th>Date</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in report.Items)
+                            {
+                                <tr>
+                                    <td>@item.ItemCode</td>
+                                    <td>@item.ItemName</td>
+                                    <td class="text-right">@item.Amount.ToString("C")</td>
+                                    <td>@(item.ItemDate?.ToString("dd/MM/yyyy") ?? "-")</td>
+                                    <td>@item.Remarks</td>
+                                </tr>
+                            }
+                            <tr class="font-weight-bold">
+                                <td colspan="2">TOTAL</td>
+                                <td class="text-right">@report.TotalAmount.ToString("C")</td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

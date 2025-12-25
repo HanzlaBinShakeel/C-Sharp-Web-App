@@ -1,0 +1,85 @@
+@model List<FinanceApp.Models.AccountGroup>
+@{
+    ViewData["Title"] = "Account Groups";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">
+                <i class="fas fa-folder-open mr-2"></i>Account Groups
+            </h2>
+            <p class="text-muted">Manage your account groups and categories</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list mr-2"></i>All Account Groups
+                </h5>
+                <a href="@Url.Action("Create")" class="btn btn-primary">
+                    <i class="fas fa-plus-circle mr-2"></i>Create New Group
+                </a>
+            </div>
+            <div class="card-body">
+                @if (Model != null && Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag mr-2"></i>Group Code</th>
+                                    <th><i class="fas fa-tag mr-2"></i>Group Name</th>
+                                    <th><i class="fas fa-layer-group mr-2"></i>Group Type</th>
+                                    <th><i class="fas fa-sitemap mr-2"></i>Parent Group</th>
+                                    <th><i class="fas fa-cog mr-2"></i>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var group in Model)
+                                {
+                                    <tr>
+                                        <td><span class="badge badge-primary">@group.GroupCode</span></td>
+                                        <td><strong>@group.GroupName</strong></td>
+                                        <td>
+                                            <span class="badge badge-info">@group.GroupType</span>
+                                        </td>
+                                        <td>@(group.ParentGroup?.GroupName ?? "-")</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <a href="@Url.Action("Edit", new { id = group.GroupID })" class="btn btn-sm btn-info" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <form asp-action="Delete" method="post" style="display:inline">
+                                                    <input type="hidden" name="id" value="@group.GroupID" />
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this group?')" title="Delete">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No account groups found. Create your first group to get started!</p>
+                        <a href="@Url.Action("Create")" class="btn btn-primary mt-3">
+                            <i class="fas fa-plus-circle mr-2"></i>Create First Group
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,81 @@
+@model FinanceApp.Models.FinancialYear
+@{
+    ViewData["Title"] = "Create Financial Year";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <h2 class="pageheader-title"><i class="fas fa-calendar-alt mr-2"></i>Create Financial Year</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card modern-card">
+            <div class="card-header modern-card-header">
+                <h4 class="mb-0"><i class="fas fa-plus-circle mr-2"></i>Financial Year Information</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="YearName" class="control-label">Year Name *</label>
+                                <input asp-for="YearName" class="form-control modern-input" placeholder="e.g., 2024-2025" />
+                                <span asp-validation-for="YearName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="StartDate" class="control-label">Start Date *</label>
+                                <input asp-for="StartDate" type="date" class="form-control modern-input" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="EndDate" class="control-label">End Date *</label>
+                                <input asp-for="EndDate" type="date" class="form-control modern-input" />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Notes" class="control-label">Notes</label>
+                        <textarea asp-for="Notes" class="form-control modern-input" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label">Set as Active Year</label>
+                            <small class="form-text text-muted">Only one financial year can be active at a time.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-gradient-primary">
+                            <i class="fas fa-save mr-1"></i>Create Financial Year
+                        </button>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="fas fa-times mr-1"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
